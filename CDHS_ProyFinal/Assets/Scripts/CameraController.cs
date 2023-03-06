@@ -18,6 +18,14 @@ public class CameraController : MonoBehaviour
         ChangeCamera(cameraToFocus);
     }
 
+    public int GetCameraNumber()
+    {
+        return cameraToFocus;
+    }
+    public void SetCameraNumber(int number)
+    {
+        cameraToFocus = number;
+    }
     void ChangeCamera(int index)
     {
         //  Validar

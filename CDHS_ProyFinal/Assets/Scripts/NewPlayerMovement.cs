@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class NewPlayerMovement : MonoBehaviour
 {
-    [SerializeField] private CameraController mainCamera;
     [SerializeField] private GameObject thirdPersonView;
     [SerializeField] private GameObject firstPersonView;
     [SerializeField] private GameObject shootView;
@@ -14,6 +14,9 @@ public class NewPlayerMovement : MonoBehaviour
     [SerializeField] private Vector3 raycastBoxSize;
     [SerializeField] private float raycastMaxDist;
     [SerializeField] private LayerMask raycastLayers;
+    [SerializeField] public UnityEvent<float> OnLeftClick;
+    [SerializeField] public UnityEvent<int> OnRightClick;
+    private float chargeProgress = 0.0f;
     private Rigidbody rbStuff;
     private Vector3 currentRotation;
 
@@ -28,6 +31,7 @@ public class NewPlayerMovement : MonoBehaviour
         MovementInput();
         RotationInput();
         ChangeCamera();
+        PrepareCharge();
         JumpMechanic();
     }
 
@@ -71,8 +75,19 @@ public class NewPlayerMovement : MonoBehaviour
     }
     private void ChangeCamera()
     {
-        if (Input.GetKey(KeyCode.Mouse1))       mainCamera.cameraToFocus = 1;
-        if (Input.GetKeyUp(KeyCode.Mouse1))     mainCamera.cameraToFocus = 0;
+        if (Input.GetKey(KeyCode.Mouse1))       OnRightClick?.Invoke(1);
+        if (Input.GetKeyUp(KeyCode.Mouse1))     OnRightClick?.Invoke(0);
+    }
+    private void PrepareCharge()
+    {
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            chargeProgress += Time.deltaTime;
+            if (chargeProgress >= 0.5f)
+                chargeProgress = 0.5f;
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse0))     chargeProgress = 0.0f;
+        OnLeftClick?.Invoke(2 * chargeProgress);
     }
     private void DrawRaycast()
     {

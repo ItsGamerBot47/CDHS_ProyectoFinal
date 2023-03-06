@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c539013dbb908e4a8892259909b037a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedBullet: 20
+  speedBullet: 25
   movingTime: 2
   raycastSphereRadius: 0.5
   raycastMaxDist: 0.5
