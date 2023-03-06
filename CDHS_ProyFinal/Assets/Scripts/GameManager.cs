@@ -7,15 +7,15 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    [SerializeField] private int totalScore = 0;
     [SerializeField] private int totalLife = 5;
-    private TestPlayerMovement player;
-    public TestPlayerMovement GetTestPlayerMovement()
+    public int GetTotalScore()
     {
-        return player;
+        return totalScore;
     }
-    public void SetPlayerMovement(TestPlayerMovement playerToAssign)
+    public void SetTotalScore(int modifyScore)
     {
-        player = playerToAssign;
+        totalScore += modifyScore;
     }
     public int GetTotalLife()
     {
@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
     {
         totalLife += lifeToChange;
     }
-    public void OfficialGameOver()
+    public void QuittingGame()
     {
         Application.Quit();
     }
@@ -73,5 +73,19 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("Game Over. Not your fault tho, the game's.");
             Debug.Break();
         }
+    }
+    public void ProceedGame(int time)
+    {
+        if (time < 0)   time = 0;
+        if (1 < time)   time = 1;
+        Time.timeScale = time;
+    }
+    public void LockCursorMode()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+    public void UnlockCursorMode()
+    {
+        Cursor.lockState = CursorLockMode.None;
     }
 }

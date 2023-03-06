@@ -8,7 +8,7 @@ public class FloatingAnimation : MonoBehaviour
     [SerializeField] private FloatType choosingAnimation;
     [SerializeField] private Animator actualAnimation;
 
-    private void Update()
+    private void FixedUpdate()
     {
         switch (choosingAnimation)
         {
