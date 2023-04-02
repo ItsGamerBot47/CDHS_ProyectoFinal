@@ -12,7 +12,7 @@ public class VolumeController : MonoBehaviour
     private void Awake()
     {
         if (boxesVolume.Length == 0)
-            Debug.LogError("Falta añadir objetos a" + gameObject.name);
+            Debug.LogError("Falta añadir objetos a " + gameObject.name);
         else
             ActivateAllBoxes();
     }
