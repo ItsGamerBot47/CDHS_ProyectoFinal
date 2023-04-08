@@ -2,15 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class TestPlayerMovement : MonoBehaviour
 {
     private enum MovementWay{ MinusZ, PlusZ, MinusX, PlusX}
     [SerializeField] private MovementWay PlayerMovement;
-    [SerializeField] private float speedMovement = 5.0f;
-    [SerializeField] private float rotationSpeed = 15.0f;
-    private bool idleRotation;
+    [SerializeField] private GameObject shootView;
+    [SerializeField] private float speedMovement = 10.0f;
+    [SerializeField] private float rotationSpeed = 8.0f;
+    [SerializeField] private float jumpForce = 20.0f;
+    [SerializeField] private Vector3 raycastBoxSize;
+    [SerializeField] private float raycastMaxDist;
+    [SerializeField] private LayerMask raycastLayers;
+    [SerializeField] public UnityEvent<float> OnLeftClick;
+    private float chargeProgress = 0.0f;
     private Rigidbody rbStuff;
+    private Vector3 currentRotation;
+    private bool idleRotation;
     private Vector3 directionToRotate;
 
     private void Awake()
@@ -19,9 +28,15 @@ public class TestPlayerMovement : MonoBehaviour
         if (rbStuff == null)
             Debug.LogError("Falta componente Rigbody en " + gameObject.name + ".");
     }
-    private void Update()
+    private void FixedUpdate()
     {
         MovementInput();
+        JumpMechanic();
+        PrepareCharge();
+    }
+    private void OnDrawGizmos()
+    {
+        DrawRaycast();
     }
 
     private void MovePlayer(Vector3 direction)
@@ -44,166 +59,63 @@ public class TestPlayerMovement : MonoBehaviour
         {
             case MovementWay.MinusZ:
             {
-                if (Input.GetKey(KeyCode.LeftArrow))
-                {
-                    if (Input.GetKey(KeyCode.UpArrow))
-                        MovePlayer(Vector3.right + Vector3.back);
-                    else if (Input.GetKey(KeyCode.DownArrow))
-                        MovePlayer(Vector3.right + Vector3.forward);
-                    else
-                        MovePlayer(Vector3.right);
-                }
-                if (Input.GetKey(KeyCode.RightArrow))
-                {
-                    if (Input.GetKey(KeyCode.UpArrow))
-                        MovePlayer(Vector3.left + Vector3.back);
-                    else if (Input.GetKey(KeyCode.DownArrow))
-                        MovePlayer(Vector3.left + Vector3.forward);
-                    else
-                        MovePlayer(Vector3.left);
-                }
-                if (Input.GetKey(KeyCode.DownArrow))
-                {
-                    if (Input.GetKey(KeyCode.LeftArrow))
-                        MovePlayer(Vector3.forward + Vector3.right);
-                    else if (Input.GetKey(KeyCode.RightArrow))
-                        MovePlayer(Vector3.forward + Vector3.left);
-                    else
-                        MovePlayer(Vector3.forward);
-                }
-                if (Input.GetKey(KeyCode.UpArrow))
-                {
-                    if (Input.GetKey(KeyCode.LeftArrow))
-                        MovePlayer(Vector3.back + Vector3.right);
-                    else if (Input.GetKey(KeyCode.RightArrow))
-                        MovePlayer(Vector3.back + Vector3.left);
-                    else
-                        MovePlayer(Vector3.back);
-                }
+                if (Input.GetKey(KeyCode.A))
+                    MovePlayer(Vector3.right);
+                if (Input.GetKey(KeyCode.D))
+                    MovePlayer(Vector3.left);
                 break;
             }
             case MovementWay.MinusX:
             {
-                if (Input.GetKey(KeyCode.LeftArrow))
-                {
-                    if (Input.GetKey(KeyCode.UpArrow))
-                        MovePlayer(Vector3.back + Vector3.left);
-                    else if (Input.GetKey(KeyCode.DownArrow))
-                        MovePlayer(Vector3.back + Vector3.right);
-                    else
-                        MovePlayer(Vector3.back);
-                }
-                if (Input.GetKey(KeyCode.RightArrow))
-                {
-                    if (Input.GetKey(KeyCode.UpArrow))
-                        MovePlayer(Vector3.forward + Vector3.left);
-                    else if (Input.GetKey(KeyCode.DownArrow))
-                        MovePlayer(Vector3.forward + Vector3.right);
-                    else
-                        MovePlayer(Vector3.forward);
-                }
-                if (Input.GetKey(KeyCode.DownArrow))
-                {
-                    if (Input.GetKey(KeyCode.LeftArrow))
-                        MovePlayer(Vector3.right + Vector3.back);
-                    else if (Input.GetKey(KeyCode.RightArrow))
-                        MovePlayer(Vector3.right + Vector3.forward);
-                    else
-                        MovePlayer(Vector3.right);
-                }
-                if (Input.GetKey(KeyCode.UpArrow))
-                {
-                    if (Input.GetKey(KeyCode.LeftArrow))
-                        MovePlayer(Vector3.left + Vector3.back);
-                    else if (Input.GetKey(KeyCode.RightArrow))
-                        MovePlayer(Vector3.left + Vector3.forward);
-                    else
-                        MovePlayer(Vector3.left);
-                }
+                if (Input.GetKey(KeyCode.A))
+                    MovePlayer(Vector3.back);
+                if (Input.GetKey(KeyCode.D))
+                    MovePlayer(Vector3.forward);
                 break;
             }
             case MovementWay.PlusZ:
             {
-                if (Input.GetKey(KeyCode.LeftArrow))
-                {
-                    if (Input.GetKey(KeyCode.UpArrow))
-                        MovePlayer(Vector3.left + Vector3.forward);
-                    else if (Input.GetKey(KeyCode.DownArrow))
-                        MovePlayer(Vector3.left + Vector3.back);
-                    else
-                        MovePlayer(Vector3.left);
-                }
-                if (Input.GetKey(KeyCode.RightArrow))
-                {
-                    if (Input.GetKey(KeyCode.UpArrow))
-                        MovePlayer(Vector3.right + Vector3.forward);
-                    else if (Input.GetKey(KeyCode.DownArrow))
-                        MovePlayer(Vector3.right + Vector3.back);
-                    else
-                        MovePlayer(Vector3.right);
-                }
-                if (Input.GetKey(KeyCode.DownArrow))
-                {
-                    if (Input.GetKey(KeyCode.LeftArrow))
-                        MovePlayer(Vector3.back + Vector3.left);
-                    else if (Input.GetKey(KeyCode.RightArrow))
-                        MovePlayer(Vector3.back + Vector3.right);
-                    else
-                        MovePlayer(Vector3.back);
-                }
-                if (Input.GetKey(KeyCode.UpArrow))
-                {
-                    if (Input.GetKey(KeyCode.LeftArrow))
-                        MovePlayer(Vector3.forward + Vector3.left);
-                    else if (Input.GetKey(KeyCode.RightArrow))
-                        MovePlayer(Vector3.forward + Vector3.right);
-                    else
-                        MovePlayer(Vector3.forward);
-                }
+                if (Input.GetKey(KeyCode.A))
+                    MovePlayer(Vector3.left);
+                if (Input.GetKey(KeyCode.D))
+                    MovePlayer(Vector3.right);
                 break;
             }
             case MovementWay.PlusX:
             {
-                if (Input.GetKey(KeyCode.LeftArrow))
-                {
-                    if (Input.GetKey(KeyCode.UpArrow))
-                        MovePlayer(Vector3.back + Vector3.right);
-                    else if (Input.GetKey(KeyCode.DownArrow))
-                        MovePlayer(Vector3.back + Vector3.left);
-                    else
-                        MovePlayer(Vector3.back);
-                }
-                if (Input.GetKey(KeyCode.RightArrow))
-                {
-                    if (Input.GetKey(KeyCode.UpArrow))
-                        MovePlayer(Vector3.forward + Vector3.right);
-                    else if (Input.GetKey(KeyCode.DownArrow))
-                        MovePlayer(Vector3.forward + Vector3.left);
-                    else
-                        MovePlayer(Vector3.forward);
-                }
-                if (Input.GetKey(KeyCode.DownArrow))
-                {
-                    if (Input.GetKey(KeyCode.LeftArrow))
-                        MovePlayer(Vector3.left + Vector3.back);
-                    else if (Input.GetKey(KeyCode.RightArrow))
-                        MovePlayer(Vector3.left + Vector3.forward);
-                    else
-                        MovePlayer(Vector3.left);
-                }
-                if (Input.GetKey(KeyCode.UpArrow))
-                {
-                    if (Input.GetKey(KeyCode.LeftArrow))
-                        MovePlayer(Vector3.right + Vector3.back);
-                    else if (Input.GetKey(KeyCode.RightArrow))
-                        MovePlayer(Vector3.right + Vector3.forward);
-                    else
-                        MovePlayer(Vector3.right);
-                }
+                if (Input.GetKey(KeyCode.A))
+                    MovePlayer(Vector3.back);
+                if (Input.GetKey(KeyCode.D))
+                    MovePlayer(Vector3.forward);
                 break;
             }
         }
         //  Rotar
         if (idleRotation)                       RotatePlayer(directionToRotate);
+    }
+    private bool JumpCheck()
+    {
+        return (Physics.BoxCast(transform.position, raycastBoxSize, -transform.up, transform.rotation, raycastMaxDist, raycastLayers));
+    }
+    private void JumpMechanic()
+    {
+        if (Input.GetKey(KeyCode.Space) && JumpCheck())
+            rbStuff.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+    }
+    private void PrepareCharge()
+    {
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            chargeProgress += Time.deltaTime;
+            if (chargeProgress >= 0.5f)
+                chargeProgress = 0.5f;
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse0))     chargeProgress = 0.0f;
+        OnLeftClick?.Invoke(2 * chargeProgress);
+    }
+    private void DrawRaycast()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawCube(transform.position - transform.up * raycastMaxDist, raycastBoxSize);
     }
 }

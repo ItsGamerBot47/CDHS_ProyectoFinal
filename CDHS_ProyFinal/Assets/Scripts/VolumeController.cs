@@ -7,20 +7,7 @@ using UnityEngine.Rendering.Universal;
 public class VolumeController : MonoBehaviour
 {
     [SerializeField] private Volume volumeObject;
-    [SerializeField] private Volume[] boxesVolume;
 
-    private void Awake()
-    {
-        if (boxesVolume.Length == 0)
-            Debug.LogError("Falta añadir objetos a " + gameObject.name);
-        else
-            ActivateAllBoxes();
-    }
-    private void ActivateAllBoxes()
-    {
-        for (int i = 0; i < boxesVolume.Length; i++)
-            boxesVolume[i].gameObject.SetActive(true);
-    }
     public void ChangeSmoothness(int camera)
     {
         if (volumeObject.profile.TryGet<Vignette>(out Vignette vignetteVolume))
