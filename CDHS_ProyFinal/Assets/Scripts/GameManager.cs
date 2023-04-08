@@ -1,14 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     [SerializeField] private int totalScore = 0;
     [SerializeField] private int totalLife = 5;
+    public event Action<int> OnDeath;
+
     public int GetTotalScore()
     {
         return totalScore;
@@ -35,9 +39,14 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
     }
+    private void Start()
+    {
+        OnDeath += ReturnToTitle;
+    }
     private void Update()
     {
-        GameOver();
+        if (totalLife == 0)
+            OnDeath?.Invoke(0);
     }
 
     public void LoadSceneWithName(string sceneName)
@@ -57,6 +66,12 @@ public class GameManager : MonoBehaviour
     {
         imageToChange.color = rgb;
     }
+    public void ReturnToTitle(int lifeOnZero)
+    {
+        LoadSceneWithName("Menú Principal");
+        UnlockCursorMode();
+        SetTotalLife(5);
+    }
     public void ModifyLife(int lifeToChange)
     {
         totalLife += lifeToChange;
@@ -67,12 +82,8 @@ public class GameManager : MonoBehaviour
     }
     public void GameOver()
     {
-        if (totalLife == 0)
-        {
-            //  Prueba
-            Debug.LogWarning("Game Over. Not your fault tho, the game's.");
-            Debug.Break();
-        }
+        Debug.LogWarning("Game Over. Not your fault tho, the game's.");
+        Debug.Break();
     }
     public void ProceedGame(int time)
     {
