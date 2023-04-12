@@ -57,7 +57,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 445459503}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.5333328}
+  m_LocalPosition: {x: 0, y: 0, z: 0.53333336}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -489,6 +489,7 @@ GameObject:
   - component: {fileID: 2230547012916156202}
   - component: {fileID: 1631003824}
   - component: {fileID: 191623000}
+  - component: {fileID: 2352668924958202205}
   m_Layer: 0
   m_Name: '- Jugador Prueba -'
   m_TagString: Player
@@ -635,6 +636,26 @@ MonoBehaviour:
   entityInfo: {fileID: 11400000, guid: 0dfe5d3f72e177e48a6a08c868de8817, type: 2}
   personInfo: {fileID: 11400000, guid: 7ed294678dbaf504295dd8ab1bbcec9c, type: 2}
   nickname: Paden
+--- !u!95 &2352668924958202205
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5158646143522588143}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 70faab9aa5299fa4ea00fbf12b84bd9d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1001 &5158646142433238025
 PrefabInstance:
   m_ObjectHideFlags: 0

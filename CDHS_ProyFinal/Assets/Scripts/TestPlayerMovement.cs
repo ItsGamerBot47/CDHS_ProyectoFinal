@@ -18,6 +18,7 @@ public class TestPlayerMovement : MonoBehaviour
     [SerializeField] public UnityEvent<float> OnLeftClick;
     private float chargeProgress = 0.0f;
     private Rigidbody rbStuff;
+    private Animator animStuff;
     private Vector3 currentRotation;
     private bool idleRotation;
     private Vector3 directionToRotate;
@@ -25,8 +26,11 @@ public class TestPlayerMovement : MonoBehaviour
     private void Awake()
     {
         rbStuff = GetComponent<Rigidbody>();
+        animStuff = GetComponent<Animator>();
         if (rbStuff == null)
             Debug.LogError("Falta componente Rigbody en " + gameObject.name + ".");
+        if (animStuff == null)
+            Debug.LogError("Falta componente Animator en " + gameObject.name + ".");
     }
     private void FixedUpdate()
     {
@@ -41,6 +45,7 @@ public class TestPlayerMovement : MonoBehaviour
 
     private void MovePlayer(Vector3 direction)
     {
+        SetAnimatorBool("OnMovement", true);
         transform.position += direction.normalized * (Time.deltaTime * speedMovement);
         directionToRotate = direction.normalized;
         idleRotation = true;
@@ -91,7 +96,7 @@ public class TestPlayerMovement : MonoBehaviour
             }
         }
         //  Rotar
-        if (idleRotation)                       RotatePlayer(directionToRotate);
+        if (idleRotation)   RotatePlayer(directionToRotate);
     }
     private bool JumpCheck()
     {
@@ -100,7 +105,10 @@ public class TestPlayerMovement : MonoBehaviour
     private void JumpMechanic()
     {
         if (Input.GetKey(KeyCode.Space) && JumpCheck())
+        {
             rbStuff.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+            SetAnimatorBool("OnMovement", true);
+        }
     }
     private void PrepareCharge()
     {
@@ -117,5 +125,9 @@ public class TestPlayerMovement : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawCube(transform.position - transform.up * raycastMaxDist, raycastBoxSize);
+    }
+    public void SetAnimatorBool(string name, bool state)
+    {
+        animStuff.SetBool(name, state);
     }
 }

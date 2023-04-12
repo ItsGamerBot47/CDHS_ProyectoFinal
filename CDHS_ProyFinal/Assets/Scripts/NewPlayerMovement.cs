@@ -19,12 +19,16 @@ public class NewPlayerMovement : MonoBehaviour
     private float chargeProgress = 0.0f;
     private Rigidbody rbStuff;
     private Vector3 currentRotation;
+    private Animator animStuff;
 
     private void Awake()
     {
         rbStuff = GetComponent<Rigidbody>();
+        animStuff = GetComponent<Animator>();
         if (rbStuff == null)
             Debug.LogError("Falta componente Rigbody en " + gameObject.name + ".");
+        if (animStuff == null)
+            Debug.LogError("Falta componente Animator en " + gameObject.name + ".");
     }
     private void FixedUpdate()
     {
@@ -42,6 +46,7 @@ public class NewPlayerMovement : MonoBehaviour
 
     private void MovePlayer(Vector3 direction)
     {
+        animStuff.SetBool("OnMovement", true);
         transform.Translate(direction.normalized * (Time.deltaTime * speedMovement), Space.Self);
     }
     private void MovementInput()
@@ -50,6 +55,8 @@ public class NewPlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.A))    MovePlayer(Vector3.left);
         if (Input.GetKey(KeyCode.S))    MovePlayer(Vector3.back);
         if (Input.GetKey(KeyCode.D))    MovePlayer(Vector3.right);
+        else
+            SetAnimatorBool("OnMovement", false);
     }
     private void RotationInput()
     {
@@ -71,7 +78,10 @@ public class NewPlayerMovement : MonoBehaviour
     private void JumpMechanic()
     {
         if (Input.GetKey(KeyCode.Space) && JumpCheck())
+        {
             rbStuff.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+            SetAnimatorBool("OnMovement", false);
+        }
     }
     private void ChangeCamera()
     {
@@ -93,5 +103,9 @@ public class NewPlayerMovement : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawCube(transform.position - transform.up * raycastMaxDist, raycastBoxSize);
+    }
+    public void SetAnimatorBool(string name, bool state)
+    {
+        animStuff.SetBool(name, state);
     }
 }

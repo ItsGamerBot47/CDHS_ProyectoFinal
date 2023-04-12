@@ -10,7 +10,9 @@ public class CanvaController : MonoBehaviour
     [SerializeField] private TMP_Text healthCounter;
     [SerializeField] private Button pauseMenu;
     [SerializeField] private Image chargeBar;
+    [SerializeField] private Image victoryBar;
     [SerializeField] private Image firstPersonDot;
+    [SerializeField] private GameObject panelVictory;
 
     private void Update()
     {
@@ -34,5 +36,13 @@ public class CanvaController : MonoBehaviour
     public void ChangeChargeBar(float amountBar)
     {
         chargeBar.fillAmount = amountBar;
+    }
+    public void ChangeVictoryBar(float amountBar)
+    {
+        victoryBar.fillAmount = amountBar;
+        if (amountBar > 0.0f)
+            panelVictory.SetActive(true);
+        else
+            panelVictory.SetActive(false);
     }
 }

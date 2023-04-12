@@ -35,7 +35,7 @@ public class ShowPlatform : MonoBehaviour
     }
     private void LoopingMovement()
     {
-        if (totalTime == 0.0f)
+        if (totalTime <= 0.0f)
             MoveToPoint(showPlatformOn[index].position);
         totalTime += Time.deltaTime;
         if (totalTime >= timeToChange)

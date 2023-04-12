@@ -26,7 +26,7 @@ public class CameraController : MonoBehaviour
     {
         cameraToFocus = number;
     }
-    void ChangeCamera(int index)
+    public void ChangeCamera(int index)
     {
         //  Validar
         if (index < 0)                      index = 0;
