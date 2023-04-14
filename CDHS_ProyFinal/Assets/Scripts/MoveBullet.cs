@@ -6,15 +6,15 @@ public class MoveBullet : MonoBehaviour
 {
     [SerializeField] private float speedBullet = 10.0f;
     [SerializeField] private float movingTime = 2.0f;
-    [SerializeField] private float raycastSphereRadius;
-    [SerializeField] private float raycastMaxDist;
-    [SerializeField] private LayerMask raycastLayers;
+    private RaycastSphere raycastInfo;
     private float totalTime = 0;
     private RaycastHit hit;
 
-    private void OnDrawGizmos()
+    private void Awake()
     {
-        DrawRaycast();
+        raycastInfo = GetComponent<RaycastSphere>();
+        if (raycastInfo == null)
+            Debug.LogError("Falta scrip RaycastSphere en " + gameObject.name + ".");
     }
     private void FixedUpdate()
     {
@@ -29,19 +29,11 @@ public class MoveBullet : MonoBehaviour
     }
     private bool BulletCheckByRaycast()
     {
-        return (Physics.SphereCast(transform.position, raycastSphereRadius, transform.forward, out hit, raycastMaxDist, raycastLayers));
+        return raycastInfo.ReturnRaycast(gameObject);
     }
     private bool BulletCheckByTime()
     {
         totalTime += Time.deltaTime;
         return (totalTime > movingTime);
-    }
-    private void DrawRaycast()
-    {
-        Gizmos.DrawWireSphere(transform.position, raycastMaxDist);
-        Gizmos.color = Color.red;
-        Vector3 sphereCastMidpoint = transform.position + (transform.forward * (raycastMaxDist-raycastSphereRadius));
-        Gizmos.DrawWireSphere(sphereCastMidpoint, raycastSphereRadius);
-        Debug.DrawLine(transform.position, sphereCastMidpoint, Color.red);
     }
 }

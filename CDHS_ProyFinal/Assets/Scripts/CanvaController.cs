@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
 
@@ -16,8 +18,8 @@ public class CanvaController : MonoBehaviour
 
     private void Update()
     {
-        UpdatingHealthImage();
         ShowPauseMenu();
+        UpdatingHealthImage();
     }
 
     private void UpdatingHealthImage()

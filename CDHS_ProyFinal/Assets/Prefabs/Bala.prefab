@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7946076897951665123}
   - component: {fileID: 7946076897951665120}
   - component: {fileID: 4011187457411863400}
+  - component: {fileID: 1430283535870371355}
   m_Layer: 0
   m_Name: Bala
   m_TagString: Untagged
@@ -112,8 +113,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedBullet: 25
   movingTime: 2
-  raycastSphereRadius: 0.5
-  raycastMaxDist: 0.5
-  raycastLayers:
-    serializedVersion: 2
-    m_Bits: 9
+--- !u!114 &1430283535870371355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7946076897951665121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dca681705f7dc24c81354e68493387c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  raycastData: {fileID: 11400000, guid: 995f9fa74a28ff347bf36e479b8c48b3, type: 2}
+  sphereData: {fileID: 11400000, guid: 493d90e8ce6415343b85bee3c8fdef84, type: 2}

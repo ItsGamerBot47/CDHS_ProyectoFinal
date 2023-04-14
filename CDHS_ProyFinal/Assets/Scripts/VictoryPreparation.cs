@@ -7,8 +7,8 @@ public class VictoryPreparation : MonoBehaviour
 {
     [SerializeField] private float victoryProcess;
     [SerializeField] private int victoryCamera;
-    [SerializeField] private UnityEvent<float> OnVictorySpace;
-    [SerializeField] private UnityEvent<int> OnVictoryComplete;
+    public static UnityEvent<float> OnVictorySpace;
+    public static UnityEvent<int> OnVictoryComplete;
     [SerializeField] private CameraController cameraScript;
 
     private void OnTriggerStay(Collider other)

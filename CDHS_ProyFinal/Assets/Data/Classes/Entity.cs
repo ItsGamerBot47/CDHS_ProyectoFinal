@@ -24,4 +24,19 @@ public class Entity : MonoBehaviour
 		[POTENCIADOR]
 		- Tipo Potenciador
 		- Efecto
+
+[RAYCAST]
+- Distancia
+- Capas
+* Dibujar raycast
+* Regresar resultado
+	[RAYCAST BOX]
+	- Tamaño "cubo"
+	* Dibujar raycast de "cubo"
+	* Regresar resultado de raycast "cubo"
+	[RAYCAST SPHERE]
+	- Radio esfera
+	- Información
+	* Dibujar raycast de esfera
+	* Regresar resultado de raycast esfera
 */
