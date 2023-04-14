@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     [SerializeField] private int totalScore = 0;
     [SerializeField] private int totalLife = 5;
-    public event Action<int> OnDeath;
+    public static event Action OnDeath;
 
     public int GetTotalScore()
     {
@@ -41,12 +41,11 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        OnDeath += ReturnToTitle;
+        OnDeath += DeathToTitle;
     }
-    private void Update()
+    private void OnDisable()
     {
-        if (totalLife == 0)
-            OnDeath?.Invoke(0);
+        OnDeath -= DeathToTitle;
     }
 
     public void LoadSceneWithName(string sceneName)
@@ -66,7 +65,7 @@ public class GameManager : MonoBehaviour
     {
         imageToChange.color = rgb;
     }
-    public void ReturnToTitle(int lifeOnZero)
+    public void DeathToTitle()
     {
         LoadSceneWithName("Menú Principal");
         UnlockCursorMode();
@@ -74,7 +73,9 @@ public class GameManager : MonoBehaviour
     }
     public void ModifyLife(int lifeToChange)
     {
-        totalLife += lifeToChange;
+        SetTotalLife(totalLife + lifeToChange);
+        if (totalLife <= 0)
+            OnDeath.Invoke();
     }
     public void QuittingGame()
     {

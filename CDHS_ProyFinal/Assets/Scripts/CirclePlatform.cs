@@ -11,7 +11,6 @@ public class CirclePlatform : MonoBehaviour
     [SerializeField] private PlatformType platformToShow;
     [SerializeField] private GameObject[] platformToSave;
     private Dictionary<PlatformType, GameObject> asignPlatform = new Dictionary<PlatformType, GameObject>();
-    
 
     private void Start()
     {

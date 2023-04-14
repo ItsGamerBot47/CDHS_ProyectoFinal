@@ -11,6 +11,8 @@ MOVIMIENTO
 [AD]        Movimiento lateral
 [Espacio]   Salto
 [C. Izq.]   Carga
+(UI)
+[ESC]       Pausa en niveles
 
 IDEA
 Como el crecimiento de la IA se encuentra en crecimiento, un duo de programdores novatos desean crear algo parecido mediante un juego y generar interacciones, pero, como ya se observa, un concepto grande como la IA requiere de altos algoritmos y controles de filtros, todo sale mal y lo abandonan en un driver, hasta que en un futuro lejano, luego de sobrevivir las consecuencias de la IA, se encontraron con este dispositivo pensando que serviria como reliquia a la historia, pero termino siendo todo lo contrario: un chiste.

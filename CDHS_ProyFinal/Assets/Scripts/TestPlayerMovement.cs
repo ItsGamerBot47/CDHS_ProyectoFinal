@@ -12,10 +12,8 @@ public class TestPlayerMovement : MonoBehaviour
     [SerializeField] private float speedMovement = 10.0f;
     [SerializeField] private float rotationSpeed = 8.0f;
     [SerializeField] private float jumpForce = 20.0f;
-    [SerializeField] private Vector3 raycastBoxSize;
-    [SerializeField] private float raycastMaxDist;
-    [SerializeField] private LayerMask raycastLayers;
-    [SerializeField] public UnityEvent<float> OnLeftClick;
+    public UnityEvent<float> OnLeftClickTest;
+    private RaycastBox raycastInfo;
     private float chargeProgress = 0.0f;
     private Rigidbody rbStuff;
     private Animator animStuff;
@@ -27,20 +25,19 @@ public class TestPlayerMovement : MonoBehaviour
     {
         rbStuff = GetComponent<Rigidbody>();
         animStuff = GetComponent<Animator>();
+        raycastInfo = GetComponent<RaycastBox>();
         if (rbStuff == null)
             Debug.LogError("Falta componente Rigbody en " + gameObject.name + ".");
         if (animStuff == null)
             Debug.LogError("Falta componente Animator en " + gameObject.name + ".");
+        if (raycastInfo == null)
+            Debug.LogError("Falta scrip RaycastBox en " + gameObject.name + ".");
     }
     private void FixedUpdate()
     {
         MovementInput();
         JumpMechanic();
         PrepareCharge();
-    }
-    private void OnDrawGizmos()
-    {
-        DrawRaycast();
     }
 
     private void MovePlayer(Vector3 direction)
@@ -100,7 +97,7 @@ public class TestPlayerMovement : MonoBehaviour
     }
     private bool JumpCheck()
     {
-        return (Physics.BoxCast(transform.position, raycastBoxSize, -transform.up, transform.rotation, raycastMaxDist, raycastLayers));
+        return raycastInfo.ReturnRaycast(gameObject);
     }
     private void JumpMechanic()
     {
@@ -119,12 +116,7 @@ public class TestPlayerMovement : MonoBehaviour
                 chargeProgress = 0.5f;
         }
         if (Input.GetKeyUp(KeyCode.Mouse0))     chargeProgress = 0.0f;
-        OnLeftClick?.Invoke(2 * chargeProgress);
-    }
-    private void DrawRaycast()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawCube(transform.position - transform.up * raycastMaxDist, raycastBoxSize);
+        OnLeftClickTest?.Invoke(2 * chargeProgress);
     }
     public void SetAnimatorBool(string name, bool state)
     {
